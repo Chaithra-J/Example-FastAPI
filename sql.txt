@@ -1,0 +1,31 @@
+CREATE DATABASE interview_db;
+USE interview_db;
+
+CREATE TABLE candidates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    position VARCHAR(100) NOT NULL,
+    status VARCHAR(50) DEFAULT 'Applied',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE interviewers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    department VARCHAR(50)
+);
+
+CREATE TABLE evaluations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    candidate_id INT,
+    interviewer_id INT,
+    technical_score INT CHECK (technical_score BETWEEN 1 AND 10),
+    communication_score INT CHECK (communication_score BETWEEN 1 AND 10),
+    feedback TEXT,
+    decision VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE,
+    FOREIGN KEY (interviewer_id) REFERENCES interviewers(id)
+);
