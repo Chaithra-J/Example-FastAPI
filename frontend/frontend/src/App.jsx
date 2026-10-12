@@ -3,6 +3,17 @@ import { Dashboard, EvaluationForm } from './pages';
 
 export default function App() {
   const [currentView, setCurrentView] = useState('dashboard');
+  const [activeDraft, setActiveDraft] = useState(null);
+
+  const startNewEvaluation = () => {
+    setActiveDraft(null);
+    setCurrentView('evaluation');
+  };
+
+  const openDraft = (draft) => {
+    setActiveDraft(draft);
+    setCurrentView('evaluation');
+  };
 
   return (
     <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", backgroundColor: "#f9fafb", minHeight: "100vh", color: "#111827" }}>
@@ -20,10 +31,10 @@ export default function App() {
 
       <main>
         {currentView === 'dashboard' && (
-          <Dashboard onNavigateToEval={() => setCurrentView('evaluation')} />
+          <Dashboard onNavigateToEval={startNewEvaluation} onEditDraft={openDraft} />
         )}
         {currentView === 'evaluation' && (
-          <EvaluationForm onBack={() => setCurrentView('dashboard')} />
+          <EvaluationForm draft={activeDraft} onBack={() => setCurrentView('dashboard')} />
         )}
       </main>
     </div>
